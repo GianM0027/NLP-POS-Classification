@@ -1,11 +1,9 @@
 import numpy as np
 import pandas as pd
 
-import plotly
 
 from matplotlib import pyplot as plt
 import seaborn as sns
-from plotly.subplots import make_subplots
 
 from sklearn.decomposition import PCA
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis

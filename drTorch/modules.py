@@ -15,6 +15,7 @@
 
 """
 
+
 from typing import Any
 
 from .wrappers import Criterion, OptimizerWrapper
@@ -41,7 +42,6 @@ class TrainableModule(torch.nn.Module):
             No new attributes are introduced in this class.
 
     """
-
     def __init__(self):
         super(TrainableModule, self).__init__()
 
@@ -75,12 +75,14 @@ class TrainableModule(torch.nn.Module):
 
         self.eval()
         with torch.no_grad():
-            for iteration, (inputs, labels) in enumerate(data_loader):
-                inputs = {key: value.to(next(self.parameters()).device) if torch.is_tensor(value) else value for key, value in inputs.items()}
-                labels = labels.to(next(self.parameters()).device)
-                outputs = self(**inputs)
-                outputs_reshaped = torch.reshape(outputs,(np.prod(outputs.shape) // outputs.shape[-1], outputs.shape[-1]))
-                labels_reshaped = torch.reshape(labels, (np.prod(labels.shape) // labels.shape[-1], labels.shape[-1]))
+            for batch_idx, (inputs, outputs) in enumerate(data_loader):
+                inputs, labels = inputs.to(next(self.parameters()).device), outputs.to(
+                    next(self.parameters()).device)
+                outputs = self(inputs)
+                outputs_reshaped = torch.reshape(outputs,
+                                                 (np.prod(outputs.shape) // outputs.shape[-1], outputs.shape[-1]))
+                labels_reshaped = torch.reshape(labels,
+                                                (np.prod(labels.shape) // labels.shape[-1], labels.shape[-1]))
                 loss = criterion(outputs_reshaped, labels_reshaped)
 
                 predicted_class_id = torch.max(outputs, len(outputs.shape) - 1)[1].view(-1)
@@ -150,11 +152,9 @@ class TrainableModule(torch.nn.Module):
             self.train()
 
             for iteration, (inputs, labels) in enumerate(train_loader):
-                inputs = {key: value.to(next(self.parameters()).device) if torch.is_tensor(value) else value for key, value in inputs.items()}
-                labels = labels.to(next(self.parameters()).device)
+                inputs, labels = inputs.to(next(self.parameters()).device), labels.to(next(self.parameters()).device)
                 optimizer.zero_grad()
-
-                outputs = self(**inputs)
+                outputs = self(inputs)
                 loss = criterion(outputs, labels)
                 loss = criterion.reduction_function(loss)
                 loss.backward()
