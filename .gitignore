@@ -1,2 +1,5 @@
 venv
 .idea
+models/__pycache__/
+__pycache__/
+drTorch/__pycache__/
