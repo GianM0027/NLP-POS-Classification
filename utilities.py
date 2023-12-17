@@ -139,11 +139,11 @@ def plot_classes_distribution(datasets: dict[str, pd.DataFrame], my_class: str, 
     else:
         plt.figure(figsize=(18, 5))
 
-        train_class_counts = datasets['train_dataset'][my_class].value_counts(sort=False).rename('Train').div(
+        train_class_counts = datasets['train_dataset'][my_class].value_counts(sort=True).rename('Train').div(
             len(datasets['train_dataset'])).mul(100)
-        val_class_counts = datasets['val_dataset'][my_class].value_counts(sort=False).rename('Val').div(
+        val_class_counts = datasets['val_dataset'][my_class].value_counts(sort=True).rename('Val').div(
             len(datasets['val_dataset'])).mul(100)
-        test_class_counts = datasets['test_dataset'][my_class].value_counts(sort=False).rename('Test').div(
+        test_class_counts = datasets['test_dataset'][my_class].value_counts(sort=True).rename('Test').div(
             len(datasets['test_dataset'])).mul(100)
 
         comparison_df = pd.concat([train_class_counts, val_class_counts, test_class_counts], axis=1, sort=False)
