@@ -49,6 +49,11 @@ The drTorch folder contains a framework developed  for creating neural network m
 
 The `models` folder contains the implementation of neural POS tagger models, including the baseline Bidirectional LSTM and extended models (Model 1 and Model 2).
 
+## Note:
+Although the files in this repository allow for a complete execution of the code, there are important considerations in such regard:
+- We found the best hyperparameters for the models by applying a very time consuming grid search, which we do not recommend to execute (the flags for its execution are already set to False in the main notebook).
+- The training of our models during the grid-search was conducted using a version of Torch that leverages NVIDIA's CUDA processing. This means that the weights that we store in the folder "results" are collected and retrieved in a CUDA-compatible environment and a version of Torch that supports this configuration. Without these, the execution will not yield the intended results.
+
 ## Authors:
 For any questions or assistance, feel free to contact:
 - [Mauro Dore](mauro.dore@studio.unibo.it)
